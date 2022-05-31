@@ -1,9 +1,14 @@
 ---
-title: "Project"
+title: "Weibo analysis"
 author: "Yiwen Lu"
-date: '2022-05-29'
-output: pdf_document
-always_allow_html: true
+date: '2022-05-31'
+header-includes:
+  - \usepackage{fontspec} # use fontspec package
+  - \usepackage{xeCJK}    # use xeCJK package
+always_allow_html: yes
+output: 
+  html_document: 
+    latex_engine: xelatex
 ---
 
 ```{r setup, include=FALSE}
@@ -115,7 +120,7 @@ newdata$微博正文 %>%
 
 ```{r}
 # kwic
-kwic <- as.data.frame(kwic(weibo_tokens, pattern="*清零*", window = 10))
+kwic <- as.data.frame(kwic(weibo_tokens, pattern="*清零*", window = 1))
 
 kwic %>%
   group_by(pre) %>%
@@ -196,20 +201,10 @@ out <- keyATM(docs              = keyATM_docs,    # text input
 # keywords by topics
 df_out <- top_words(out)
 ```
-```{r}
-install.packages("gridExtra")
-library(gridExtra)
-png("test.png", height = 50*nrow(df_out), width = 200*ncol(df_out))
-grid.table(df_out)
-dev.off()
-```
 
-```{r}
-trans <- read_csv("trans.csv")
-```
-```{r}
-png("trans.png", height = 5000*nrow(trans), width = 20000*ncol(trans))
-grid.table(trans)
-dev.off()
-```
+# Reference
+
+- [Chapter 7](https://alvinntnu.github.io/NTNU_ENC2036_LECTURES/chinese-text-processing.html) of Alvin Cheng-Hsien Chen's course *Courpus Linguistics* was especially helpful with processing Chinese text using `JiebaR` and `Quanteda`.
+- The code used in fitting `keyATM` was adapted from PLSC 21510/31510 Spring 2022 lecture on [unsupervised models](https://github.com/rochelleterman/TAD-S22/tree/main/8_Unsupervised-2)
+
 
